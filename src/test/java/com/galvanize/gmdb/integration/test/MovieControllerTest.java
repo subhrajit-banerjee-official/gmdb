@@ -48,8 +48,16 @@ public class MovieControllerTest {
     public void test_FetchSpecificMovies_Success() throws Exception {
         mvc.perform(get("/movies/Gladiator"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Gladiator"));
+                .andExpect(jsonPath("$.title").value("Gladiator"))
+                .andExpect(jsonPath("$.director").value("Rajnikant"))
+                .andExpect(jsonPath("$.actors").value("Russle,Ram,Subhrajit"))
+                .andExpect(jsonPath("$.release_year").value(2001))
+                .andExpect(jsonPath("$.description").value("A movie about something"))
+                .andExpect(jsonPath("$.reviews").value("Great movie"))
+                .andExpect(jsonPath("$.rating").value(5))
+                .andExpect(jsonPath("$.overAllRating").value(4))
         ;
+
     }
 
     @Test
@@ -73,12 +81,16 @@ public class MovieControllerTest {
     }
 
     private Movie getMovie(String title) {
+
         Movie movie = Movie.builder()
                 .title(title)
                 .director("Rajnikant")
                 .actors("Russle,Ram,Subhrajit")
                 .release_year(2001)
                 .description("A movie about something")
+                .rating("5")
+                .reviews("Great movie")
+                .overAllRating(4)
                 .build();
         return movie;
     }

@@ -20,7 +20,9 @@ public class Movie {
     private String actors;
     private int release_year;
     private String description;
-    //private List<Integer> rating;
-    //private List<String> reviews;
+    // Comma delimited Integer Values
+    private String rating;
+    // Comma delimited Integer Values
+    private String reviews;
     private int overAllRating;
 }
