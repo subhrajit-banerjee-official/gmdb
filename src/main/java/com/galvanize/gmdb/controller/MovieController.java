@@ -1,13 +1,12 @@
 package com.galvanize.gmdb.controller;
 
 import com.galvanize.gmdb.model.Movie;
+import com.galvanize.gmdb.model.Review;
 import com.galvanize.gmdb.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,10 @@ public class MovieController {
         }else{
             return new ResponseEntity ("Movie doesn't exist", HttpStatus.NO_CONTENT);
         }
-
     }
 
+    @PostMapping("/movies/{title}")
+    public ResponseEntity reviewSpecificMovie(@PathVariable String title,@RequestBody Review review){
+        return new ResponseEntity("Updated", HttpStatus.OK);
+    }
 }
