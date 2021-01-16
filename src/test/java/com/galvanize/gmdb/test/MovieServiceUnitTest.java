@@ -1,4 +1,4 @@
-package com.galvanize.gmdb.unit.test;
+package com.galvanize.gmdb.test;
 
 import com.galvanize.gmdb.TestUtility;
 import com.galvanize.gmdb.model.Movie;
@@ -10,11 +10,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 
-public class MovieServiceTest {
+public class MovieServiceUnitTest {
+
+    public static final String TITLE_CATCH_ME_IF_YOU_CAN = "Catch Me if you can";
 
     @Test
     public void testUpdateMovieReview(){
-        Movie movie = TestUtility.getMovie("Catch Me if you can",null, null);
+        Movie movie = TestUtility.getMovie(TITLE_CATCH_ME_IF_YOU_CAN,null, null);
         Review review = TestUtility.getReview();
         MovieService movieService = new MovieService();
         assertNull(movie.getRating());
@@ -31,8 +33,13 @@ public class MovieServiceTest {
 
     @Test
     public void testUpdateOverAllRating(){
-        Movie movie = TestUtility.getMovie("Catch Me if you can",null, "5,3");
         MovieService movieService = new MovieService();
+
+        Movie movieNoRating = TestUtility.getMovie(TITLE_CATCH_ME_IF_YOU_CAN,null, null);
+        movieService.updateOverAllRating(movieNoRating);
+        assertEquals(0, movieNoRating.getOverAllRating());
+
+        Movie movie = TestUtility.getMovie(TITLE_CATCH_ME_IF_YOU_CAN,null, "5,3");
         movieService.updateOverAllRating(movie);
         assertEquals(4, movie.getOverAllRating());
     }

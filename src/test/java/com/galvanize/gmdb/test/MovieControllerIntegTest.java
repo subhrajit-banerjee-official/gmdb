@@ -1,4 +1,4 @@
-package com.galvanize.gmdb.integration.test;
+package com.galvanize.gmdb.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.gmdb.TestUtility;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-public class MovieControllerTest {
+public class MovieControllerIntegTest {
 
     @Autowired
     MockMvc mvc;
@@ -98,13 +98,24 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void test_reviewSpecificMovies_Failure() throws Exception {
+    public void test_reviewSpecificMovies_ValidationFailure() throws Exception {
         String reviewString = mapper.writeValueAsString(TestUtility.getReviewWithoutRating());
         mvc.perform(post("/movies/Titanic")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(reviewString))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").value("Star Rating required"));
+        ;
+    }
+
+    @Test
+    public void test_reviewSpecificMovies_NoSuchMovieFailure() throws Exception {
+        String reviewString = mapper.writeValueAsString(TestUtility.getReview());
+        mvc.perform(post("/movies/NoSuchMovie")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(reviewString))
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$").value("Movie doesn't exist"));
         ;
     }
 

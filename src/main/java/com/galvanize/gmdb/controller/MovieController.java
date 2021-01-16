@@ -39,16 +39,17 @@ public class MovieController {
 
     @PostMapping("/movies/{title}")
     public ResponseEntity reviewSpecificMovie(@PathVariable String title, @RequestBody Review review) {
-        if (movieService.validateRequest(review)){
+        if (movieService.validateRequest(review)) {
             Movie movie = movieService.fetchSpecificMovie(title);
             //UpdateMovie With Review
             if (movie != null) {
                 movieService.addReview(movie, review);
+                return new ResponseEntity(movie, HttpStatus.OK);
+            } else {
+                return new ResponseEntity("Movie doesn't exist", HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity(movie, HttpStatus.OK);
-        }
-        else
-        {
+
+        } else {
             return new ResponseEntity("Star Rating required", HttpStatus.BAD_REQUEST);
 
         }
