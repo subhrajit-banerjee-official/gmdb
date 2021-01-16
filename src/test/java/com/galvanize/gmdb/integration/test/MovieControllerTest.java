@@ -38,16 +38,20 @@ public class MovieControllerTest {
 
     @Test
     public void test_FetchAllMovies() throws Exception {
-        setupDb();
         mvc.perform(get("/movies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$.[0].title").value("Gladiator"))
-        ;
-
+                .andExpect(jsonPath("$.[0].title").value("Gladiator"));
     }
 
-    private void setupDb(){
+    @Test
+    public void test_FetchSpecificMovies_Success() throws Exception {
+        mvc.perform(get("/movies/Gladiator"))
+                .andExpect(status().isOk());
+    }
+
+    @BeforeEach
+    private void setupDb() {
         List<Movie> movies = new ArrayList<>();
         movies.add(getMovie("Gladiator"));
         movies.add(getMovie("Titanic"));
@@ -56,7 +60,13 @@ public class MovieControllerTest {
     }
 
     private Movie getMovie(String title) {
-        Movie movie = Movie.builder().title(title).build();
+        Movie movie = Movie.builder()
+                .title(title)
+                .director("Rajnikant")
+                .actors("Russle,Ram,Subhrajit")
+                .release_year(2001)
+                .description("A movie about something")
+                .build();
         return movie;
     }
 

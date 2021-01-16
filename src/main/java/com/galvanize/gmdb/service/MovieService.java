@@ -19,4 +19,8 @@ public class MovieService {
     public List<Movie> fetchAllMovies() {
         return movieRepository.findAll();
     }
+
+    public Movie fetchSpecificMovie(String title) {
+        return null;
+    }
 }

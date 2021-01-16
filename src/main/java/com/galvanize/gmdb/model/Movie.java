@@ -18,7 +18,7 @@ public class Movie {
     private String title;
     private String director;
     private String actors;
-    private String release_year;
+    private int release_year;
     private String description;
     //private List<Integer> rating;
     //private List<String> reviews;
