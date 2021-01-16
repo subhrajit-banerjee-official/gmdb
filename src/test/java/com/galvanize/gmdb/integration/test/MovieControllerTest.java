@@ -97,6 +97,16 @@ public class MovieControllerTest {
         ;
     }
 
+    @Test
+    public void test_reviewSpecificMovies_Failure() throws Exception {
+        String reviewString = mapper.writeValueAsString(TestUtility.getReviewWithoutRating());
+        mvc.perform(post("/movies/Titanic")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(reviewString))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").value("Star Rating required"));
+        ;
+    }
 
 
 }
