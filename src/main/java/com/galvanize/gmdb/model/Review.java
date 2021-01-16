@@ -10,5 +10,5 @@ import lombok.*;
 public class Review {
 
     private String textReview;
-    private int rating;
+    private Integer rating;
 }

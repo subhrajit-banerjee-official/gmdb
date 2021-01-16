@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.gmdb.TestUtility;
 import com.galvanize.gmdb.model.GMDBConstants;
 import com.galvanize.gmdb.model.Movie;
-import com.galvanize.gmdb.model.Review;
 import com.galvanize.gmdb.repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,12 +42,15 @@ public class MovieControllerTest {
     @BeforeEach
     void setupDb() {
         List<Movie> movies = new ArrayList<>();
-        Movie gladiatorMovie = TestUtility.getMovie(GMDBConstants.EXPECTED_VALUE_MOVIE_TITLE_GLADIATOR);
+        Movie gladiatorMovie = TestUtility.getMovie(GMDBConstants.EXPECTED_VALUE_MOVIE_TITLE_GLADIATOR, GMDBConstants.EXPECTED_VALUE_REVIEWS, GMDBConstants.EXPECTED_VALUE_RATING);
+        Movie titanicMovie = TestUtility.getMovie(GMDBConstants.EXPECTED_VALUE_MOVIE_TITLE_TITANIC,null,null);
         movies.add(gladiatorMovie);
-        movies.add(TestUtility.getMovie("Titanic"));
+        movies.add(titanicMovie);
 
         when(movieRepository.findAll()).thenReturn(movies);
         when(movieRepository.findById(GMDBConstants.EXPECTED_VALUE_MOVIE_TITLE_GLADIATOR)).thenReturn(java.util.Optional.ofNullable(gladiatorMovie));
+        when(movieRepository.findById(GMDBConstants.EXPECTED_VALUE_MOVIE_TITLE_TITANIC)).thenReturn(java.util.Optional.ofNullable(titanicMovie));
+
         when(movieRepository.findById(GMDBConstants.NO_SUCH_MOVIE)).thenReturn(java.util.Optional.empty());
     }
 
@@ -84,14 +86,17 @@ public class MovieControllerTest {
 
     @Test
     public void test_reviewSpecificMovies_Success() throws Exception {
-        Review review = new Review();
-        review.setTextReview("Greatest movie of all time");
-        review.setRating(5);
-        String reviewString = mapper.writeValueAsString(review);
-        mvc.perform(post("/movies/Gladiator")
+        String reviewString = mapper.writeValueAsString(TestUtility.getReview());
+        mvc.perform(post("/movies/Titanic")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(reviewString))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value(GMDBConstants.EXPECTED_VALUE_MOVIE_TITLE_TITANIC))
+                .andExpect(jsonPath("$.reviews").value(GMDBConstants.EXPECTED_VALUE_TITANIC_REVIEWS))
+                .andExpect(jsonPath("$.rating").value(GMDBConstants.EXPECTED_VALUE_TITANIC_RATING))
+        ;
     }
+
+
 
 }
