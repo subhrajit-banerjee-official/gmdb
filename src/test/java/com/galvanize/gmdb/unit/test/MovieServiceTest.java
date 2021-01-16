@@ -37,4 +37,13 @@ public class MovieServiceTest {
         assertEquals(4, movie.getOverAllRating());
     }
 
+    @Test
+    public void testAvailabilityOfReview(){
+        MovieService movieService = new MovieService();
+        boolean emptyReview = movieService.validateRequest(TestUtility.getReviewWithoutRating());
+        assertEquals(false, emptyReview);
+
+        boolean validReview = movieService.validateRequest(TestUtility.getReview());
+        assertEquals(true, validReview);
+    }
 }

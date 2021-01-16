@@ -62,7 +62,7 @@ public class MovieService {
     }
 
     public void updateOverAllRating(Movie movie) {
-        if(movie.getRating()!= null && !movie.getRating().isBlank()){
+        if(movie.getRating()!= null && !movie.getRating().isEmpty()){
             String[] values = movie.getRating().split(",");
             int sumOfAllRating = 0;
             for(String val : values){
@@ -75,4 +75,10 @@ public class MovieService {
 
     }
 
+    public boolean validateRequest(Review review) {
+        if (review.getRating() == null || review.getRating() == 0)
+            return false;
+        else
+            return true;
+    }
 }

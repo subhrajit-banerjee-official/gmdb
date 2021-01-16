@@ -27,4 +27,10 @@ public class TestUtility {
         review.setRating(GMDBConstants.EXPECTED_VALUE_TITANIC_RATING);
         return review;
     }
+
+    public static Review getReviewWithoutRating(){
+        Review review = new Review();
+        review.setTextReview(GMDBConstants.EXPECTED_VALUE_TITANIC_REVIEWS);
+        return review;
+    }
 }
