@@ -16,4 +16,6 @@ public class GMDBConstants {
     public static final int EXPECTED_VALUE_OVERALL_RATING = 4;
 
 
+    public static final String ERR_MOVIE_DOES_NOT_EXIST = "Movie doesn't exist";
+    public static final String ERR_STAR_RATING_REQUIRED = "Star Rating required";
 }

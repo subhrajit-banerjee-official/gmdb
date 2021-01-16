@@ -1,5 +1,6 @@
 package com.galvanize.gmdb.controller;
 
+import com.galvanize.gmdb.model.GMDBConstants;
 import com.galvanize.gmdb.model.Movie;
 import com.galvanize.gmdb.model.Review;
 import com.galvanize.gmdb.service.MovieService;
@@ -28,12 +29,11 @@ public class MovieController {
 
     @GetMapping("/movies/{title}")
     public ResponseEntity fetchSpecificMovie(@PathVariable String title) {
-        Movie movie;
-        movie = movieService.fetchSpecificMovie(title);
+        Movie movie = movieService.fetchSpecificMovie(title);
         if (movie != null) {
             return new ResponseEntity(movie, HttpStatus.OK);
         } else {
-            return new ResponseEntity("Movie doesn't exist", HttpStatus.NO_CONTENT);
+            return new ResponseEntity(GMDBConstants.ERR_MOVIE_DOES_NOT_EXIST, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -46,11 +46,11 @@ public class MovieController {
                 movieService.addReview(movie, review);
                 return new ResponseEntity(movie, HttpStatus.OK);
             } else {
-                return new ResponseEntity("Movie doesn't exist", HttpStatus.NO_CONTENT);
+                return new ResponseEntity(GMDBConstants.ERR_MOVIE_DOES_NOT_EXIST, HttpStatus.NO_CONTENT);
             }
 
         } else {
-            return new ResponseEntity("Star Rating required", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(GMDBConstants.ERR_STAR_RATING_REQUIRED, HttpStatus.BAD_REQUEST);
 
         }
     }

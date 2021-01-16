@@ -81,7 +81,7 @@ public class MovieControllerIntegTest {
     public void test_FetchSpecificMovies_NoSuchMovie() throws Exception {
         mvc.perform(get("/movies/NoSuchMovie"))
                 .andExpect(status().isNoContent())
-                .andExpect(jsonPath("$").value("Movie doesn't exist"));
+                .andExpect(jsonPath("$").value(GMDBConstants.ERR_MOVIE_DOES_NOT_EXIST));
     }
 
     @Test
@@ -104,8 +104,7 @@ public class MovieControllerIntegTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(reviewString))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$").value("Star Rating required"));
-        ;
+                .andExpect(jsonPath("$").value(GMDBConstants.ERR_STAR_RATING_REQUIRED));
     }
 
     @Test
@@ -115,8 +114,7 @@ public class MovieControllerIntegTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(reviewString))
                 .andExpect(status().isNoContent())
-                .andExpect(jsonPath("$").value("Movie doesn't exist"));
-        ;
+                .andExpect(jsonPath("$").value(GMDBConstants.ERR_MOVIE_DOES_NOT_EXIST));
     }
 
 
