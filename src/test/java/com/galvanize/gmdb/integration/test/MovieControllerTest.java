@@ -1,11 +1,21 @@
 package com.galvanize.gmdb.integration.test;
 
+import com.galvanize.gmdb.model.Movie;
+import com.galvanize.gmdb.repository.MovieRepository;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,13 +33,31 @@ public class MovieControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @MockBean
+    private MovieRepository movieRepository;
+
     @Test
     public void test_FetchAllMovies() throws Exception {
+        setupDb();
         mvc.perform(get("/movies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$.[0].title").value("Gladiator"))
         ;
 
+    }
+
+    private void setupDb(){
+        List<Movie> movies = new ArrayList<>();
+        movies.add(getMovie("Gladiator"));
+        movies.add(getMovie("Titanic"));
+
+        when(movieRepository.findAll()).thenReturn(movies);
+    }
+
+    private Movie getMovie(String title) {
+        Movie movie = Movie.builder().title(title).build();
+        return movie;
     }
 
 }

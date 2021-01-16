@@ -1,5 +1,8 @@
 package com.galvanize.gmdb.controller;
 
+import com.galvanize.gmdb.model.Movie;
+import com.galvanize.gmdb.service.MovieService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,11 +12,13 @@ import java.util.List;
 @RestController
 public class MovieController {
 
+    @Autowired
+    MovieService movieService;
+
     @GetMapping("/movies")
-    public List<String> fetchAllMovies(){
-        List<String> movies = new ArrayList<>();
-        movies.add("Catch me if you can");
-        movies.add("Gladiator");
+    public List<Movie> fetchAllMovies(){
+        List<Movie> movies = new ArrayList<>();
+        movies=movieService.fetchAllMovies();
 
         return movies;
 
