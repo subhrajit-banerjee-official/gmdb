@@ -52,6 +52,14 @@ public class MovieControllerTest {
         ;
     }
 
+    @Test
+    public void test_FetchSpecificMovies_NoSuchMovie() throws Exception {
+        mvc.perform(get("/movies/NoSuchMovie"))
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$").value("Movie doesn't exist"));
+        ;
+    }
+
     @BeforeEach
     private void setupDb() {
         List<Movie> movies = new ArrayList<>();
@@ -60,8 +68,8 @@ public class MovieControllerTest {
         movies.add(getMovie("Titanic"));
 
         when(movieRepository.findAll()).thenReturn(movies);
-
         when(movieRepository.findById("Gladiator")).thenReturn(java.util.Optional.ofNullable(gladiatorMovie));
+        when(movieRepository.findById("NoSuchMovie")).thenReturn(java.util.Optional.empty());
     }
 
     private Movie getMovie(String title) {
