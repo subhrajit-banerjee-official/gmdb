@@ -47,16 +47,21 @@ public class MovieControllerTest {
     @Test
     public void test_FetchSpecificMovies_Success() throws Exception {
         mvc.perform(get("/movies/Gladiator"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("Gladiator"));
+        ;
     }
 
     @BeforeEach
     private void setupDb() {
         List<Movie> movies = new ArrayList<>();
-        movies.add(getMovie("Gladiator"));
+        Movie gladiatorMovie = getMovie("Gladiator");
+        movies.add(gladiatorMovie);
         movies.add(getMovie("Titanic"));
 
         when(movieRepository.findAll()).thenReturn(movies);
+
+        when(movieRepository.findById("Gladiator")).thenReturn(java.util.Optional.ofNullable(gladiatorMovie));
     }
 
     private Movie getMovie(String title) {

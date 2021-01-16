@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class MovieService {
@@ -21,6 +22,12 @@ public class MovieService {
     }
 
     public Movie fetchSpecificMovie(String title) {
-        return null;
+        Movie movie;
+        try{
+            movie = movieRepository.findById(title).get();
+        }catch(NoSuchElementException nse){
+            movie = null;
+        }
+        return movie;
     }
 }
