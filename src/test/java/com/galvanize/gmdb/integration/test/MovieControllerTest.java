@@ -26,7 +26,9 @@ public class MovieControllerTest {
     @Test
     public void test_FetchAllMovies() throws Exception {
         mvc.perform(get("/movies"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+        ;
 
     }
 
